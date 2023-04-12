@@ -1,6 +1,8 @@
 hs.window.animationDuration = 0.1
 
 mover = {"cmd", "ctrl"}
+moverTwoThirds = {"cmd", "ctrl", "alt"}
+moverOneThird = {"cmd", "ctrl", "shift"}
 
 -- next screen
 hs.hotkey.bind(mover, 'Down', function()
@@ -26,6 +28,36 @@ hs.hotkey.bind(mover, "Left", function()
     win:setFrame(f)
 end)
 
+hs.hotkey.bind(moverTwoThirds, "Left", function()
+    local win = hs.window.focusedWindow()
+    local f = win:frame()
+    local screen = win:screen()
+    local max = screen:frame()
+
+    local third = max.w / 3
+
+    f.x = max.x
+    f.y = max.y
+    f.w = third * 2
+    f.h = max.h
+    win:setFrame(f)
+end)
+
+hs.hotkey.bind(moverOneThird, "Left", function()
+    local win = hs.window.focusedWindow()
+    local f = win:frame()
+    local screen = win:screen()
+    local max = screen:frame()
+
+    local third = max.w / 3
+
+    f.x = max.x
+    f.y = max.y
+    f.w = third
+    f.h = max.h
+    win:setFrame(f)
+end)
+
 hs.hotkey.bind(mover, "Right", function()
     local win = hs.window.focusedWindow()
     local f = win:frame()
@@ -35,6 +67,36 @@ hs.hotkey.bind(mover, "Right", function()
     f.x = max.x + (max.w / 2)
     f.y = max.y
     f.w = max.w / 2
+    f.h = max.h
+    win:setFrame(f)
+end)
+
+hs.hotkey.bind(moverTwoThirds, "Right", function()
+    local win = hs.window.focusedWindow()
+    local f = win:frame()
+    local screen = win:screen()
+    local max = screen:frame()
+
+    local third = max.w / 3
+
+    f.x = max.x + third
+    f.y = max.y
+    f.w = third * 2
+    f.h = max.h
+    win:setFrame(f)
+end)
+
+hs.hotkey.bind(moverOneThird, "Right", function()
+    local win = hs.window.focusedWindow()
+    local f = win:frame()
+    local screen = win:screen()
+    local max = screen:frame()
+
+    local third = max.w / 3
+
+    f.x = max.x + (third * 2)
+    f.y = max.y
+    f.w = third
     f.h = max.h
     win:setFrame(f)
 end)
