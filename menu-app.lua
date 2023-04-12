@@ -1,12 +1,20 @@
+local speech = require 'hs.speech'
+
 focusMenu = hs.menubar.new()
 local defaultFocusText = "🔥"
 b = ""
 
 jokesTimer = nil
+timer = nil
+timeLeftTimer = nil;
+
+jokesEnabled = true
+announcerEnabled = true
+
+-- Init speaker.
+speaker = speech.new()
 
 json = hs.json.read("~/jokes.json")
-
-jokesMenu = hs.menubar.new()
 
 jokesTimer = hs.timer.doEvery(10 * 60, function()
     if (jokesEnabled) then
@@ -15,13 +23,6 @@ jokesTimer = hs.timer.doEvery(10 * 60, function()
         hs.notify.show("Dad Joke", joke[1], joke[2])
     end
 end)
-
-local speech = require 'hs.speech'
-
--- Init speaker.
-speaker = speech.new()
-
-announcerMenu = hs.menubar.new()
 
 announcerTimer = hs.timer.doEvery(60, function()
     local mins = os.date("%M")
@@ -43,9 +44,6 @@ if focusMenu then
     -- focusMenu:setClickCallback(focusClicked)
     focusMenu:setTitle(defaultFocusText)
 end
-
-timer = nil
-timeLeftTimer = nil;
 
 function createTimerMap(minutes)
     return {
@@ -84,19 +82,16 @@ function createTimerMap(minutes)
 end
 
 DIVIDER = {
-    title = "-------",
+    title = "-",
     disabled = true
 }
-
-jokesEnabled = true
-announcerEnabled = true
 
 focusMenu:setMenu(function()
     return {{
         title = "set title",
         fn = focusClicked
     }, DIVIDER, createTimerMap(1), createTimerMap(5), createTimerMap(10), createTimerMap(15), createTimerMap(20),
-            createTimerMap(30), DIVIDER, {
+            createTimerMap(30), createTimerMap(45), createTimerMap(60), createTimerMap(90), DIVIDER, {
         title = "stop timer",
         fn = function()
             if timer then
@@ -125,10 +120,8 @@ focusMenu:setMenu(function()
         fn = function()
             if (announcerEnabled) then
                 announcerEnabled = false
-                -- announcerMenu:setTitle("disabled")
             else
                 announcerEnabled = true
-                -- announcerMenu:setTitle("enabled")
             end
         end
     }}
